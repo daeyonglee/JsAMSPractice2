@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>JsAMSPractice2</display-name>
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  
+  
+  <filter>
+  	<filter-name>CharacterEncoding</filter-name>
+  	<filter-class>kr.or.kosta.ams.common.web.CharacterEncodingFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>CharacterEncoding</filter-name>
+  	<url-pattern>*</url-pattern>
+  </filter-mapping>
+  	<!-- 웹브라우저 모든 요청에 대한 단일 진입점 역할의 Front Controller Servlet(메인서블릿) 등록 -->
+	<servlet>
+		<servlet-name>frontController</servlet-name>
+		<servlet-class>kr.or.kosta.ams.common.controller.SimpleFrontControllerServlet_V4</servlet-class>
+		<init-param>
+			<param-name>controllerMapperLocation</param-name>
+			<!-- <param-value>G:\kosta\workspace_web\Model2WebStudy\WebContent\WEB-INF\controller-mapper.properties</param-value> -->
+			<param-value>G:\kosta\workspace_web\JsAMSPractice2\WebContent\WEB-INF\controller-mapper.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>frontController</servlet-name>
+		<url-pattern>*.mall</url-pattern>
+		<!-- <url-pattern>/blog/*</url-pattern> -->
+	</servlet-mapping>
+</web-app>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+	<!-- 홈페이지 세부컨트롤러 등록 -->
+	<bean name="/index" class="kr.or.kosta.ams.main.controller.IndexController" />
+	
+	<!-- ams 세부컨트롤러 등록 -->
+	<bean name="/ams" class="kr.or.kosta.ams.main.controller.AmsController" />
+	<bean name="/amsIns" class="kr.or.kosta.ams.main.controller.AmsInsController" />
+	
+</beans>
