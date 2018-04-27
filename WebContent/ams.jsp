@@ -93,7 +93,7 @@ $(function(){
           </c:choose>
           <td>${account.accNum}</td>
           <td>${account.accNm}</td>
-          <td>${account.restMoney}</td>
+          <td>${account.restMoney-account.borrowMoney}</td>
           <td>${account.borrowMoney}</td>
         </tr>
       </c:forEach>

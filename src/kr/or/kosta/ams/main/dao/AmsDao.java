@@ -13,11 +13,11 @@ public interface AmsDao {
 	public void create(Account account);
 	
 	/* 계좌 조회 */
-	public Account read(int accNum);
+	public Account read(String accNum);
 	
 	/* 계좌 검색 */
 	public List<Account> search(String accNm);
 	
 	/* 계좌 삭제 */
-	public void remove(int accNum);
+	public void remove(String accNum);
 }

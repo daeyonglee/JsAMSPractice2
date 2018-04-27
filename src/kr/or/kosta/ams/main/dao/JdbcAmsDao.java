@@ -36,7 +36,7 @@ public class JdbcAmsDao implements AmsDao{
 					 "     , accPw" + 
 					 "     , restMoney" + 
 					 "     , borrowMoney" + 
-					 "     , to_char(regdate, 'yyyy-mm-dd HH:MM:ss') as regdate" + 
+					 "     , regdate" + 
 					 "  from accounts" + 
 					 " order by regdate desc";
 		
@@ -104,20 +104,94 @@ public class JdbcAmsDao implements AmsDao{
 	
 	/* 계좌 조회 */
 	@Override
-	public Account read(int accNum) {
-		// TODO Auto-generated method stub
-		return null;
+	public Account read(String accNum) {
+		String sql = "select accType" + 
+				 "     , accNum" + 
+				 "     , accNm" + 
+				 "     , accPw" + 
+				 "     , restMoney" + 
+				 "     , borrowMoney" + 
+				 "     , regdate" + 
+				 "  from accounts" + 
+				 " where accNum = ?";
+		Account account = new Account();
+		try {
+			con = dataSource.getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, accNum);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				account.setAccType(rs.getInt("accType"));
+				account.setAccNum(rs.getString("accNum"));
+				account.setAccNm(rs.getString("accNm"));
+				account.setAccPw(rs.getInt("accPw"));
+				account.setRestMoney(rs.getInt("restMoney"));
+				account.setBorrowMoney(rs.getInt("borrowMoney"));
+				account.setRegdate(rs.getString("regdate"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(rs, pstmt, con);
+		}
+		
+		return account;
 	}
 	/* 계좌 검색 */
 	@Override
 	public List<Account> search(String accNm) {
-		// TODO Auto-generated method stub
-		return null;
+		String sql = "select accType" + 
+				 "     , accNum" + 
+				 "     , accNm" + 
+				 "     , accPw" + 
+				 "     , restMoney" + 
+				 "     , borrowMoney" + 
+				 "     , regdate" + 
+				 "  from accounts" + 
+				 " where accNm LIKE ?";
+	
+		List<Account> list = new ArrayList<Account>();
+		try {
+			con = dataSource.getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, "%"+accNm+"%");
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				Account account = new Account();
+				account.setAccType(rs.getInt("accType"));
+				account.setAccNum(rs.getString("accNum"));
+				account.setAccNm(rs.getString("accNm"));
+				account.setAccPw(rs.getInt("accPw"));
+				account.setRestMoney(rs.getInt("restMoney"));
+				account.setBorrowMoney(rs.getInt("borrowMoney"));
+				account.setRegdate(rs.getString("regdate"));
+				list.add(account);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(rs, pstmt, con);
+		}
+		
+		return list;
 	}
 	/* 계좌 삭제 */
 	@Override
-	public void remove(int accNum) {
-		// TODO Auto-generated method stub
+	public void remove(String accNum) {
+		String sql = "delete from accounts where accNum = ?";
+		
+		try {
+			con = dataSource.getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, accNum);
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(rs, pstmt, con);
+		}
 		
 	}
 	

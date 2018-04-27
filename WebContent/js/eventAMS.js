@@ -11,7 +11,7 @@ var accountManager = null;
 function eventRegist() {
 	// 버튼 클릭 이벤트
 	btnIns();
-	/*btnSelByAccOwner();
+	btnSelByAccOwner();
 	btnSelByAccNum();
 	btnDelByAccNum();
 	
@@ -21,8 +21,7 @@ function eventRegist() {
 	inputIns();
 	
 	// 계좌종류 변경 될때 이벤트 처리
-	selectSel();*/
-	
+	selectSel();
 }
 
 /**
@@ -40,12 +39,6 @@ function btnIns(){
 		var accPw     = $('input[name="accPw"]').val();
 		var restMoney = $('input[name="restMoney"]').val();
 		var borrowMoney = $('input[name="borrowMoney"]').val();
-		console.log('accType: ' + accType);
-		console.log('accNum: ' + accNum);
-		console.log('accNm: ' + accNm);
-		console.log('accPw: ' + accPw);
-		console.log('restMoney: ' + restMoney);
-		console.log('borrowMoney: ' + borrowMoney);
 		
 		var data = {
 			accType: accType,
@@ -74,37 +67,6 @@ function btnIns(){
 		}*/
 		
 	});
-	
-	/*
-	document.getElementById('ins').addEventListener('click', function(e) {
-		err('');
-		
-		var accountNum   = document.getElementsByTagName('table').item(0).getElementsByTagName('tr').item(1).getElementsByTagName('td').item(1).getElementsByTagName('input').item(0).value;
-		var accountOwner = document.getElementsByTagName('table').item(0).getElementsByTagName('tr').item(2).getElementsByTagName('td').item(1).getElementsByTagName('input').item(0).value;
-		var passwd       = document.getElementsByTagName('table').item(0).getElementsByTagName('tr').item(3).getElementsByTagName('td').item(1).getElementsByTagName('input').item(0).value;
-		var restMoney    = document.getElementsByTagName('table').item(0).getElementsByTagName('tr').item(3).getElementsByTagName('td').item(3).getElementsByTagName('input').item(0).value;
-		
-		if(checkValid(3)) {
-			var accountType  = document.getElementsByTagName('table').item(0).getElementsByTagName('tr').item(0).getElementsByTagName('td').item(1).getElementsByTagName('select').item(0).value;
-			
-			if (accountType == '입출금계좌') {
-				accountManager.open(new Account(accountNum, accountOwner, passwd, restMoney));
-			} else if (accountType == '마이너스계좌') {
-				var borrowMoney = document.getElementsByTagName('table').item(0).getElementsByTagName('tr').item(4).getElementsByTagName('td').item(1).getElementsByTagName('input').item(0).value;
-				accountManager.open(new MinusAccount(accountNum, accountOwner, passwd, restMoney, borrowMoney));
-			}
-			
-			err('정상적으로 등록되었습니다.');
-			
-			setTimeout(function() {
-				err('');
-				clear();
-				document.getElementById('selAll').click();
-			}, 2000);
-			
-		}
-	}, false);
-	*/
 }
 
 /**
@@ -112,6 +74,45 @@ function btnIns(){
  * @returns
  */
 function btnSelByAccOwner(){
+	$('#selByAccOwner').on('click', function(e){
+		err('');
+		
+		var accNm = $('input[name="accNm"]').val();
+		
+		var data = {
+			accNm : accNm
+		};
+		
+		$.ajax({
+			url: "amsSrh.mall",
+			data: $.param(data),
+			type: "GET",
+			success: function(data){
+				var inner = "<tr><th>계좌종류</th><th>계좌번호</th><th>예금주명</th><th>현재잔액</th><th>대출금액</th></tr>";
+				$.each(JSON.parse(data), function(index, value) {
+					inner += "<tr>";
+					if (value.accType == 1) {
+						inner += "<td>입출금계좌</td>";
+					} else {
+						inner += "<td>마이너스계좌</td>";
+					}
+					
+					inner += "<td>"+value.accNum+"</td>";
+					inner += "<td>"+value.accNm+"</td>";
+					inner += "<td>"+(value.restMoney-value.borrowMoney)+"</td>";
+					inner += "<td>"+value.borrowMoney+"</td>";
+					inner += "</tr>";
+				});
+				$('footer table').html(inner);
+			},
+			error : function() {
+				alert('등록된 사용자가 없습니다.');
+			}
+		});
+		
+	});
+	
+	/*
 	document.getElementById('selByAccOwner').addEventListener('click', function(e) {
 		err('');
 		 
@@ -129,6 +130,7 @@ function btnSelByAccOwner(){
  		}
 		
 	}, false);
+	*/
 }
 
 /**
@@ -136,7 +138,47 @@ function btnSelByAccOwner(){
  * @returns
  */
 function btnSelByAccNum() {
-	document.getElementById('selByAccNum').addEventListener('click', function(e) {
+	
+	$('#selByAccNum').on('click', function(e){
+		err('');
+		
+		var accNum = $('input[name="accNum"]').val();
+		
+		var data = {
+			accNum : accNum
+		};
+		
+		$.ajax({
+			url: "amsRead.mall",
+			data: $.param(data),
+			type: "GET",
+			success: function(data){
+				console.log(data);
+				var inner = "<tr><th>계좌종류</th><th>계좌번호</th><th>예금주명</th><th>현재잔액</th><th>대출금액</th></tr>";
+				var value = JSON.parse(data);
+				
+				inner += "<tr>";
+				if (value.accType == 1) {
+					inner += "<td>입출금계좌</td>";
+				} else {
+					inner += "<td>마이너스계좌</td>";
+				}
+				
+				inner += "<td>"+value.accNum+"</td>";
+				inner += "<td>"+value.accNm+"</td>";
+				inner += "<td>"+(value.restMoney-value.borrowMoney)+"</td>";
+				inner += "<td>"+value.borrowMoney+"</td>";
+				inner += "</tr>";
+		
+				$('footer table').html(inner);
+			},
+			error : function() {
+				alert('등록된 사용자가 없습니다.');
+			}
+		});
+	});
+	
+	/*document.getElementById('selByAccNum').addEventListener('click', function(e) {
 		err('');
 		
 		if (checkValid(0)) {
@@ -151,7 +193,7 @@ function btnSelByAccNum() {
 				print([acc]);
 			}
 		}
-	}, false)
+	}, false)*/
 }
 
 /**
@@ -159,7 +201,32 @@ function btnSelByAccNum() {
  * @returns
  */
 function btnDelByAccNum() {
-	document.getElementById('delByAccNum').addEventListener('click', function(e) {
+	$('#delByAccNum').on('click', function(e){
+		err('');
+		
+		var accNum    = $('input[name="accNum"]').val();
+		
+		var data = {
+			accNum : accNum	
+		};
+		
+		$.ajax({
+			url: "amsDel.mall",
+			data: $.param(data),
+			type: "POST",
+			success: function(data){
+				alert('정상적으로 삭제되었습니다.');
+				window.location.href = 'ams.mall';
+			},
+			error : function() {
+				alert('계좌 삭제하는데 실패하였습니다.');
+			}
+		});
+		
+	});
+	
+	
+	/*document.getElementById('delByAccNum').addEventListener('click', function(e) {
 		err('');
 		
 		if (checkValid(2)) {
@@ -175,7 +242,7 @@ function btnDelByAccNum() {
 				print(accountManager.listAll());
 			}
 		}
-	}, false)
+	}, false)*/
 }
 
 /**
@@ -324,6 +391,20 @@ function checkValid(flag) {
  * @returns
  */
 function selectSel() {
+	
+	$('#accType').on('change', function(e){
+		
+		var val = e.target.value;
+		
+		if (val == 1){
+			console.log($('input[name="borrowMoney"]'));
+			$('input[name="borrowMoney"]').attr("disabled", true);
+		} else {
+			$('input[name="borrowMoney"]').attr("disabled", false);
+		}
+		
+	});
+	
 	/*document.getElementById('sel').addEventListener('change', function(e) {
 		var accountType = e.target.value;
 		var borrowMoney  = document.getElementsByTagName('table').item(0).getElementsByTagName('tr').item(4).getElementsByTagName('td').item(1).getElementsByTagName('input').item(0);

@@ -6,5 +6,7 @@
 	<!-- ams 세부컨트롤러 등록 -->
 	<bean name="/ams" class="kr.or.kosta.ams.main.controller.AmsController" />
 	<bean name="/amsIns" class="kr.or.kosta.ams.main.controller.AmsInsController" />
-	
+	<bean name="/amsSrh" class="kr.or.kosta.ams.main.controller.AmsSrhController" />
+	<bean name="/amsRead" class="kr.or.kosta.ams.main.controller.AmsReadController" />
+	<bean name="/amsDel" class="kr.or.kosta.ams.main.controller.AmsDelController" />
 </beans>

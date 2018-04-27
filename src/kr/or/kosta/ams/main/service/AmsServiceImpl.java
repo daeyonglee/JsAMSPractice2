@@ -29,4 +29,21 @@ public class AmsServiceImpl implements AmsService{
 	public void create(Account account) {
 		dao.create(account);
 	}
+	/* 계좌 검색 */
+	@Override
+	public List<Account> search(String accNm) {
+		return dao.search(accNm);
+	}
+	
+	/* 계좌 조회 */
+	@Override
+	public Account read(String accNum) {
+		return dao.read(accNum);
+	}
+	
+	/* 계좌 삭제 */
+	@Override
+	public void remove(String accNum) {
+		dao.remove(accNum);
+	}
 }
